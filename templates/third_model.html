@@ -1,0 +1,11 @@
+{% extends "model_base.html" %}
+{% set accent = "cyan" %}{% set number = "03" %}{% set heading = "TabNet" %}
+{% set description = "An attentive deep-learning model for tabular data. TabNet learns which lagged sensor features matter at each decision step." %}
+{% set default_lags = 5 %}{% set button_label = "Train TabNet" %}
+{% block title %}TabNet Analysis · DHT Intelligence Lab{% endblock %}{% block page_id %}third{% endblock %}
+{% block model_controls %}
+<label>Decision width<input id="decisionWidth" type="number" min="4" max="64" value="8"></label>
+<label>Attention steps<input id="attentionSteps" type="number" min="1" max="10" value="3"></label>
+<label>Maximum epochs<input id="epochs" type="number" min="10" max="1000" value="100"></label>
+{% endblock %}
+{% block prediction_panel %}<section class="panel predict-box"><div><p class="eyebrow">INFERENCE</p><h2>Forecast with trained TabNet</h2></div><label>Steps ahead<input id="predictSteps" type="number" min="1" max="100" value="5"></label><button id="predictButton" class="button">Predict</button><div id="futurePredictions" class="prediction-list empty">Train TabNet first.</div></section>{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "model_base.html" %}
+{% set accent = "amber" %}{% set number = "01" %}{% set heading = "Multiple Linear Regression" %}
+{% set description = "A transparent time-series regression using lagged sensor values. Python returns the fitted equation, coefficients, validation metrics and iterative forecast." %}
+{% set default_lags = 3 %}{% set button_label = "Analyse with MLR" %}
+{% block title %}MLR Analysis · DHT Intelligence Lab{% endblock %}{% block page_id %}mlr{% endblock %}
+{% block model_controls %}<label>Forecast steps<input id="steps" type="number" min="1" max="100" value="5"></label>{% endblock %}
+{% block prediction_panel %}<section class="panel"><div class="panel-heading"><div><p class="eyebrow">FORECAST</p><h2>Future predictions</h2></div></div><div id="futurePredictions" class="prediction-list empty">No forecast yet.</div></section>{% endblock %}

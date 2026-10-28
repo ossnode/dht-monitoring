@@ -1,0 +1,24 @@
+Both devices must be connected to the same Wi‑Fi network.
+On the laptop, start Flask:
+
+cd C:\Users\oss\Downloads\dht11-monitoring8\dht-monitoring
+.\.venv\Scripts\Activate.ps1
+python app.py
+
+& "C:\Program Files\MySQL\MySQL Server 8.4\bin\mysql.exe" -u root -p
+USE dht_monitoring;
+SHOW TABLES;
+SELECT * FROM readings LIMIT 10;
+
+Invoke-RestMethod `
+  -Method Post `
+  -Uri http://localhost:8080/data `
+  -ContentType "application/json" `
+  -Body '{"temperature":27,"humidity":65}'
+
+This works without activating the virtual environment first. It ensures Python can access the packages installed in .venv, such as Flask, NumPy and scikit-learn.
+These two approaches are equivalent:
+.\.venv\Scripts\python.exe app.py
+Or:
+.\.venv\Scripts\activate.bat
+python app.py

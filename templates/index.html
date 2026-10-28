@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Live Monitor · DHT Intelligence Lab{% endblock %}
+{% block page_id %}home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">ENVIRONMENTAL TELEMETRY</p>
+    <h1>One sensor stream.<br><em>Three ways to learn.</em></h1>
+    <p class="lede">Readings arrive through <code>POST /data</code>, are written by Python to both databases, and become available to every analysis interface.</p>
+    <div class="actions"><a class="button primary" href="/mlr">Start analysing</a><a class="button" href="/api/export/csv">Export CSV</a></div>
+  </div>
+  <div class="live-orb" aria-hidden="true"><span id="orbTemp">—</span><small>°C NOW</small></div>
+</section>
+
+<section class="stats" aria-label="Latest sensor values">
+  <article><span class="stat-icon warm">T</span><div><small>Temperature</small><strong id="latestTemp">—</strong><span>degrees Celsius</span></div></article>
+  <article><span class="stat-icon cool">H</span><div><small>Humidity</small><strong id="latestHumidity">—</strong><span>relative humidity</span></div></article>
+  <article><span class="stat-icon neutral">#</span><div><small>Buffered readings</small><strong id="readingCount">0</strong><span id="lastUpdated">awaiting data</span></div></article>
+</section>
+
+<section class="panel chart-panel">
+  <div class="panel-heading"><div><p class="eyebrow">LIVE SIGNAL</p><h2>Temperature & humidity</h2></div><button id="refreshReadings" class="button compact">Refresh</button></div>
+  <canvas id="readingsChart" width="1200" height="360" aria-label="Sensor readings line chart"></canvas>
+</section>
+
+<section class="section-heading"><p class="eyebrow">ANALYSIS WORKBENCH</p><h2>Choose an algorithm</h2><p>Every calculation runs on the Flask server. The browser only submits settings and renders results.</p></section>
+<section class="model-grid">
+  <a class="model-card amber" href="/mlr"><span>01</span><h3>Multiple Linear Regression</h3><p>Explain next-step behaviour with an equation, coefficients, forecasts and interpretable metrics.</p><b>Open MLR →</b></a>
+  <a class="model-card violet" href="/mlp"><span>02</span><h3>Multilayer Perceptron</h3><p>Train a nonlinear neural network over lagged temperature and humidity measurements.</p><b>Open MLP →</b></a>
+  <a class="model-card cyan" href="/third-model"><span>03</span><h3>TabNet</h3><p>Use attentive feature selection to model tabular sensor sequences and inspect importance.</p><b>Open TabNet →</b></a>
+</section>
+
+<section class="panel preprocess-panel">
+  <div class="panel-heading"><div><p class="eyebrow">SERVER-SIDE PREPROCESSING</p><h2>Clean the current dataset</h2></div><span id="preprocessSummary" class="tag">Not run</span></div>
+  <div class="operation-grid">
+    <label><input type="checkbox" name="operation" value="drop_missing" checked><span><b>Missing values</b><small>Remove incomplete rows</small></span></label>
+    <label><input type="checkbox" name="operation" value="remove_duplicates" checked><span><b>Duplicates</b><small>Remove repeated rows</small></span></label>
+    <label><input type="checkbox" name="operation" value="iqr"><span><b>IQR filter</b><small>Remove robust outliers</small></span></label>
+    <label><input type="checkbox" name="operation" value="zscore"><span><b>Z-score filter</b><small>Remove values beyond 3 sigma</small></span></label>
+    <label><input type="checkbox" name="operation" value="moving_average"><span><b>Moving average</b><small>Smooth over three readings</small></span></label>
+    <label><input type="checkbox" name="operation" value="normalize"><span><b>Normalize</b><small>Scale values from 0 to 1</small></span></label>
+  </div>
+  <button id="preprocessButton" class="button primary">Run in Python</button>
+  <div id="preprocessOutput" class="details"></div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">RECENT DATA</p><h2>Reading log</h2></div><span id="dataSource" class="tag">buffer</span></div>
+  <div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>Temperature</th><th>Humidity</th><th>Reading ID</th></tr></thead><tbody id="readingsBody"><tr><td colspan="4" class="empty">No readings yet. Send a reading to <code>POST /data</code>.</td></tr></tbody></table></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>{% endblock %}

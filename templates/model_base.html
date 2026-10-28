@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="model-hero {{ accent }}">
+  <a href="/" class="back">← Back to monitor</a>
+  <p class="eyebrow">MODEL {{ number }}</p>
+  <h1>{{ heading }}</h1>
+  <p>{{ description }}</p>
+</section>
+<section class="workspace">
+  <aside class="panel controls">
+    <div><p class="eyebrow">CONFIGURATION</p><h2>Training settings</h2></div>
+    <label>Prediction target<select id="target"><option value="temperature">Temperature</option><option value="humidity">Humidity</option></select></label>
+    <label>Previous readings (lags)<input id="lags" type="number" min="1" max="24" value="{{ default_lags }}"></label>
+    {% block model_controls %}{% endblock %}
+    <button id="trainButton" class="button primary full">{{ button_label }}</button>
+    <p class="hint">Uses the latest server-side MySQL data, with the live buffer as fallback.</p>
+  </aside>
+  <div class="results-stack">
+    <section class="panel">
+      <div class="panel-heading"><div><p class="eyebrow">MODEL OUTPUT</p><h2>Performance</h2></div><span id="modelState" class="tag">Not trained</span></div>
+      <div id="metrics" class="metric-grid"><div class="empty wide">Train the model to see validation metrics.</div></div>
+      <div id="modelDetails" class="details"></div>
+    </section>
+    <section class="panel chart-panel"><div class="panel-heading"><div><p class="eyebrow">VALIDATION</p><h2>Actual vs predicted</h2></div></div><canvas id="predictionChart" width="1000" height="320"></canvas></section>
+    {% block prediction_panel %}{% endblock %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/models.js') }}"></script>{% endblock %}

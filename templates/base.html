@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ESP32 DHT11 monitoring and server-side machine learning">
+  <title>{% block title %}DHT Intelligence Lab{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body data-page="{% block page_id %}home{% endblock %}">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="DHT Intelligence Lab home">
+      <span class="brand-mark">D11</span>
+      <span><strong>DHT Intelligence Lab</strong><small>ESP32 · Flask · Server-side ML</small></span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="/">Monitor</a><a href="/mlr">MLR</a><a href="/mlp">MLP</a><a href="/third-model">TabNet</a>
+    </nav>
+    <span id="serverStatus" class="status"><i></i> Checking server</span>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer>One Flask process · MySQL + Firebase RTDB · Models execute in Python</footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
